@@ -151,7 +151,3 @@ Developed by **[Tszon Tseng](https://github.com/Tszontseng)**
 ---
 
 ✨ With this app, telecom providers can **predict churn, understand why customers leave, and design better retention strategies.**
-
----
-
-Would you like me to also **add example screenshots (plots + app UI)** inside the README so it looks even more engaging (visuals catch recruiters’ eyes fast)?
