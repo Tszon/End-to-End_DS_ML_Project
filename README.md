@@ -125,10 +125,10 @@ Customer_Churn_Prediction/
 
 ## 🛠️ Tech Stack
 
-* **Python** (pandas, numpy, scikit-learn, xgboost, shap, hdbscan, umap)
-* **Visualization** (matplotlib, seaborn, streamlit)
-* **MLOps Tools**: Docker, GitHub, MLflow (experiments)
-* **Deployment**: Streamlit Cloud
+* **Python**: `pandas`, `numpy`, `scikit-learn`, `xgboost`, `shap`, `hdbscan`, `umap`
+* **Visualization**: `matplotlib`, `seaborn`, `streamlit`
+* **MLOps Tools**: `Docker`, `GitHub`, `MLflow` (Experimental Tracking)
+* **Deployment**: `Streamlit Cloud`
 
 ---
 
@@ -146,7 +146,7 @@ Developed by **[Tszon Tseng](https://github.com/Tszontseng)**
 
 * 💼 Passionate about Data Science & AI
 * 🚀 Building end-to-end ML pipelines
-* 🌐 [LinkedIn Profile](#) (add yours!)
+* 🌐 [LinkedIn Profile]([#](https://www.linkedin.com/in/tszon-tseng-a381aa297/))
 
 ---
 
