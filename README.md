@@ -23,7 +23,7 @@ The project includes:
 
 ## 📂 Dataset
 
-Dataset: [`WA_Fn-UseC_-Telco-Customer-Churn.csv`](https://www.kaggle.com/blastchar/telco-customer-churn)
+Dataset: [WA_Fn-UseC_-Telco-Customer-Churn.csv](https://www.kaggle.com/blastchar/telco-customer-churn)
 
 * **Target**: `"Churn"` (Yes/No)
 * **Features include**:
@@ -146,7 +146,7 @@ Developed by **[Tszon Tseng](https://github.com/Tszontseng)**
 
 * 💼 Passionate about Data Science & AI
 * 🚀 Building end-to-end ML pipelines
-* 🌐 [LinkedIn Profile]([#](https://www.linkedin.com/in/tszon-tseng-a381aa297/))
+* 🌐 [LinkedIn Profile](https://www.linkedin.com/in/tszon-tseng-a381aa297/)
 
 ---
 
