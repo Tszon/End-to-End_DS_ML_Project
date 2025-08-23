@@ -1,0 +1,104 @@
+{
+  "version": "v1",
+  "target": "Churn",
+  "numeric": {
+    "tenure": {
+      "min": 0.0,
+      "max": 72.0,
+      "mean": 32.29642777901043,
+      "std": 24.656728839653056
+    },
+    "MonthlyCharges": {
+      "min": 18.4,
+      "max": 118.75,
+      "mean": 64.69534058131794,
+      "std": 30.01785732083633
+    }
+  },
+  "categorical": {
+    "gender": [
+      "F",
+      "M"
+    ],
+    "SeniorCitizen": [
+      0,
+      1
+    ],
+    "Partner": [
+      "No",
+      "Yes"
+    ],
+    "Dependents": [
+      "No",
+      "Yes"
+    ],
+    "PhoneService": [
+      "No",
+      "Yes"
+    ],
+    "MultipleLines": [
+      "No",
+      "No phone service",
+      "Yes"
+    ],
+    "InternetService": [
+      "DSL",
+      "Fiber optic",
+      "No"
+    ],
+    "OnlineSecurity": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "OnlineBackup": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "DeviceProtection": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "TechSupport": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "StreamingTV": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "StreamingMovies": [
+      "No",
+      "No internet service",
+      "Yes"
+    ],
+    "Contract": [
+      "Month-to-month",
+      "One year",
+      "Two year"
+    ],
+    "PaperlessBilling": [
+      "No",
+      "Yes"
+    ],
+    "PaymentMethod": [
+      "Bank transfer (automatic)",
+      "Credit card (automatic)",
+      "Electronic check",
+      "Mailed check"
+    ]
+  },
+  "split": {
+    "seed": 42,
+    "method": "stratified_holdout",
+    "sizes": {
+      "train": 4507,
+      "val": 1127,
+      "test": 1409
+    }
+  }
+}

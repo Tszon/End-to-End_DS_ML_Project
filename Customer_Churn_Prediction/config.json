@@ -1,0 +1,75 @@
+{
+    "train_test_split": {
+      "test_size": 0.2,
+      "random_state": 42
+    },
+
+    "kmeans": {
+      "random_state": 42
+    },
+
+    "UMAP": {
+      "n_neighbors": 10,
+      "min_dist": 0.0,
+      "n_components": 10,
+      "metric": "cosine",
+      "random_state": 42
+      },
+
+    "HDBSCAN": {
+      "min_cluster_size": 500,
+      "cluster_selection_method": "eom",
+      "prediction_data": true
+      },
+
+    "LogisticRegression": {
+      "solver": "saga",
+      "penalty": "l1",
+      "C": 11.288378916846883,
+      "max_iter": 1000,
+      "random_state": 42,
+      "class_weight": "balanced"
+    },
+
+    "StratifiedKFold": {
+      "n_splits": 5,
+      "shuffle": true,
+      "random_state": 42
+    },
+    
+    "RandomizedSearchCV": {
+      "random_state": 42
+    },
+
+    "RandomForest": {
+      "n_estimators": 400,
+      "min_samples_split": 5,
+      "min_samples_leaf": 4,
+      "max_features": "log2",
+      "max_depth": 10,
+      "random_state": 42,
+      "class_weight": "balanced"
+    },
+
+    "XGBoost": {
+      "subsample": 0.8,
+      "n_estimators": 200,
+      "min_child_weight": 3,
+      "max_depth": 8,
+      "learning_rate": 0.01,
+      "gamma": 1.0,
+      "colsample_bytree": 0.6,
+      "random_state": 42
+    },
+
+    "VotingClassifier": {
+      "voting": "soft",
+      "n_jobs": -1,
+      "weights": [1, 2, 1]
+    },
+
+    "plot_SHAP_waterfall_plots": {
+      "random_state": 42
+    }
+
+}
