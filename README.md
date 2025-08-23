@@ -1,10 +1,8 @@
 # 📊 Telco Customer Churn Prediction
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tszontseng-customer-churn-segregation-prediction.streamlit.app/)
-
 ## 🌐 Live Demo
 
-👉 [Try the app here](https://tszontseng-customer-churn-segregation-prediction.streamlit.app/)
+👉 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tszontseng-customer-churn-project.streamlit.app/)
 
 ---
 
