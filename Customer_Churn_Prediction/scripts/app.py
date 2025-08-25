@@ -2,7 +2,11 @@ import sys
 from pathlib import Path
 import json
 import streamlit as st
+import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import chi2_contingency
 import joblib
 
 # --- Path setup ---
@@ -14,19 +18,21 @@ from src.myproject.utils.paths import MODELS_DIR, PREPROCESSED_DATA, VIS_DIR
 # --- Page Config ---
 st.set_page_config(page_title="Telco Customer Churn Prediction", layout="wide")
 
+tab_names = [
+        "① Introduction 📖",
+        "② EDA & Customer Segregation 🔎",
+        "③ Churn Prediction & Explainable AI 📊",
+        "④ Churn Model Demo 🧪",
+        "⑤ A/B Testing 🧬"
+    ]
 # --- Sidebar Navigation (vertical main tabs) ---
 page = st.sidebar.radio(
     "Navigate",
-    [
-        "📖 Introduction",
-        "🔎 EDA & Customer Segregation",
-        "📊 Churn Prediction & Explainable AI",
-        "🧪 Model Demonstration"
-    ]
+    tab_names
 )
 
 # --- TAB 1: INTRO ---
-if page == "📖 Introduction":
+if page == tab_names[0]:
     st.title("📖 Telco Customer Churn Prediction Project")
     st.markdown("""
                 ## End-to-End ML Deployment Project
@@ -36,36 +42,43 @@ if page == "📖 Introduction":
 
     The goal of this project is to **predict customer behaviour** so the company can **retain customers**.  
     By analysing customer data, we can develop **targeted retention programs** to reduce churn and increase loyalty.
-
-    ### 📂 Dataset
-    - Source: `WA_Fn-UseC_-Telco-Customer-Churn.csv`
-    - Each row = 1 customer, columns = customer attributes.
+                """)
     
-    **Key features include:**
-    - **Churn** → whether the customer left in the last month.  
-    - **Services** → `PhoneService`, `MultipleLines`, `InternetService`, `OnlineSecurity`, `OnlineBackup`, `DeviceProtection`, `TechSupport`, `StreamingTV/movies`.  
-    - **Account Info** → `tenure`, `Contract`, `PaymentMethod`, `PaperlessBilling`, `MonthlyCharges`.  
-    - **Demographics** → `Gender`, `Partner`, `Dependents`.
+    col1, col2 = st.columns(2)
 
-    ### ⚙️ Tools & Methods
-    - **Data Management**: NumPy, Pandas, JSON  
-    - **Statistical Tests**: SciPy  
-    - **Data Visualisation**: Matplotlib, Seaborn  
-    - **Machine Learning**:  
-        - Supervised: Logistic Regression, Random Forest, XGBoost  
-        - Unsupervised: K-Means Clustering, HDBSCAN, UMAP
-    - **Experimental Tracking**: MLflow  
-    - **Explainability**: SHAP  
-    - **Deployment**: Streamlit, Docker
-    - **Version Control**: Git/GitHub  
-    """)
+    with col1:
+        st.markdown("""
+                        ### 📂 Dataset
+        - Source: `WA_Fn-UseC_-Telco-Customer-Churn.csv`
+        - Each row = 1 customer, columns = customer attributes.
+        **Key features include:**
+        - **Churn** → whether the customer left in the last month.  
+        - **Services** → `PhoneService`, `MultipleLines`, `InternetService`, `OnlineSecurity`, `OnlineBackup`, `DeviceProtection`, `TechSupport`, `StreamingTV/movies`.  
+        - **Account Info** → `tenure`, `Contract`, `PaymentMethod`, `PaperlessBilling`, `MonthlyCharges`.  
+        - **Demographics** → `Gender`, `Partner`, `Dependents`.
+                    """)
+
+    with col2:
+        st.markdown("""
+        ### ⚙️ Tools & Methods
+        - **Data Management**: NumPy, Pandas, JSON  
+        - **Statistical Tests**: SciPy  
+        - **Data Visualisation**: Matplotlib, Seaborn  
+        - **Machine Learning**:  
+            - Supervised: Logistic Regression, Random Forest, XGBoost  
+            - Unsupervised: K-Means Clustering, HDBSCAN, UMAP
+        - **Experimental Tracking**: MLflow  
+        - **Explainability**: SHAP  
+        - **Deployment**: Streamlit, Docker
+        - **Version Control**: Git/GitHub  
+                    """)
 
     img = VIS_DIR / "Telco-business-models-1.png"
     if img.exists():
         st.image(img, caption="Telco Business Model.", use_container_width=True)
 
 # --- TAB 2: EDA & SEGREGATION ---
-elif page == "🔎 EDA & Customer Segregation":
+elif page == tab_names[1]:
     st.title("🔎 Exploratory Data Analysis & Clustering")
 
     tab_eda, tab_cluster = st.tabs(["📊 EDA", "👥 Customer Segregation (Clustering)"])
@@ -82,28 +95,30 @@ elif page == "🔎 EDA & Customer Segregation":
         if plot1.exists(): 
             with col1:
                 st.image(plot1, caption="Tenure vs Monthly Charges by Churn")
+                st.markdown("""
+            **Insights:**
+            - **Fiber Optic customers churn the most** → pricing/service quality issues.  
+            - **DSL customers churn less** → stable pricing or loyalty.  
+                        """)
         if plot2.exists(): 
             with col2:
                 st.image(plot2, caption="Tenure vs Monthly Charges by Internet Service")
 
-        st.markdown("""
-        **Insights:**
-        - **Fiber Optic customers churn the most** → pricing/service quality issues.  
-        - **DSL customers churn less** → stable pricing or loyalty.  
-        """)
-
-        st.subheader("Tenure Distribution by Churn")
+        col1, col2 = st.columns(2)
 
         plot3 = VIS_DIR / "tenure_distribution_by_churn.png"
-        if plot3.exists(): 
-            st.image(plot3, caption="Tenure Distribution by Churn")
+        if plot3.exists():
+            with col1:
+                st.subheader("Tenure Distribution by Churn")
+                st.image(plot3, caption="Tenure Distribution by Churn")
 
-        st.markdown("""
-        **Insights:**
-        - **High churn risk in first 5 months** → onboarding/competitors matter most early.  
-        - Customers with **> 24 months tenure** churn less.  
-        - **Loyalty peak at 60–70 months** → long-term contracts encourage stability.  
-        """)
+        with col2:
+            st.markdown("""
+            **Insights:**
+            - **High churn risk in first 5 months** → onboarding/competitors matter most early.  
+            - Customers with **> 24 months tenure** churn less.  
+            - **Loyalty peak at 60–70 months** → long-term contracts encourage stability.  
+            """)
 
     # --- Sub-tab: Clustering ---
     with tab_cluster:
@@ -184,7 +199,7 @@ elif page == "🔎 EDA & Customer Segregation":
         """)
 
 # --- TAB 3: PREDICTION ---
-elif page == "📊 Churn Prediction & Explainable AI":
+elif page == tab_names[2]:
     st.title("📊 Churn Prediction Models & Explainable AI")
 
     tab_logreg, tab_rf, tab_xgb, tab_vote, tab_shap = st.tabs([
@@ -197,13 +212,13 @@ elif page == "📊 Churn Prediction & Explainable AI":
 
     # --- Logistic Regression ---
     with tab_logreg:
-        st.subheader("Baseline Logistic Regression")
 
         col1, col2 = st.columns(2)
 
         roc = VIS_DIR / "churn_prediction" / "log_reg_roc_v1.png"
         if roc.exists(): 
             with col1:
+                st.subheader("Baseline Logistic Regression")
                 st.image(roc, caption="Logistic Regression ROC")
 
         report = VIS_DIR / "churn_prediction" / "log_reg_report_v1.txt"
@@ -219,7 +234,6 @@ elif page == "📊 Churn Prediction & Explainable AI":
 
     # --- Random Forest ---
     with tab_rf:
-        st.subheader("Random Forest Classifier")
 
         col1, col2 = st.columns(2)
 
@@ -228,6 +242,7 @@ elif page == "📊 Churn Prediction & Explainable AI":
 
         if roc.exists(): 
             with col1:
+                st.subheader("Random Forest Classifier")
                 st.image(roc, caption="Random Forest ROC")
 
         if rpt.exists():
@@ -242,8 +257,6 @@ elif page == "📊 Churn Prediction & Explainable AI":
 
     # --- XGBoost ---
     with tab_xgb:
-        st.subheader("XGBoost Classifier")
-
         col1, col2 = st.columns(2)
 
         roc = VIS_DIR / "churn_prediction" / "xgb_roc_v1.png"
@@ -251,6 +264,7 @@ elif page == "📊 Churn Prediction & Explainable AI":
 
         if roc.exists(): 
             with col1:
+                st.subheader("XGBoost Classifier")
                 st.image(roc, caption="XGBoost ROC")
 
         if rpt.exists():
@@ -265,8 +279,7 @@ elif page == "📊 Churn Prediction & Explainable AI":
 
     # --- Voting Classifier ---
     with tab_vote:
-        st.subheader("Voting Classifier (Ensemble)")
-
+    
         col1, col2 = st.columns(2)
 
         roc = VIS_DIR / "churn_prediction" / "votingclassifier_roc_v1.png"
@@ -274,6 +287,7 @@ elif page == "📊 Churn Prediction & Explainable AI":
 
         if roc.exists(): 
             with col1:
+                st.subheader("Voting Classifier (Ensemble)")
                 st.image(roc, caption="Voting Classifier ROC")
 
         if rpt.exists():
@@ -315,7 +329,7 @@ elif page == "📊 Churn Prediction & Explainable AI":
                     st.image(wf, caption=f"Waterfall Plot ({model_name})")
 
 # --- TAB 4: Model Demonstration ---
-elif page == "🧪 Model Demonstration":
+elif page == tab_names[3]:
     st.title("🧪 Interactive Model Demonstration")
     st.markdown("""
     Enter customer information below and select a classifier.  
@@ -337,28 +351,35 @@ elif page == "🧪 Model Demonstration":
         "XGBoost": joblib.load(MODELS_DIR / "xgb_v1.joblib"),
     }
 
+    col1, col2, col3 = st.columns(3)
+
     # --- Sidebar for model choice ---
-    clf_choice = st.selectbox("Choose a classifier model:", list(models.keys()))
-    model = models[clf_choice]
+    with col1:
+        st.subheader("Classifier Selection")
+        clf_choice = st.selectbox("", list(models.keys()))
+        model = models[clf_choice]
 
     # --- Input Form (dynamic from metadata) ---
     with st.form("prediction_form"):
         input_data = {}
 
-        st.subheader("Numeric Features")
         for feat, stats in num_features.items():
             min_val = float(stats["min"])
             max_val = float(stats["max"])
             mean_val = float(stats["mean"])
-
+        
             if "tenure" in feat.lower():
-                input_data[feat] = st.slider(
-                    f"{feat} (months)", int(min_val), int(max_val), int(mean_val)
-                )
+                with col2:
+                    st.subheader("Numeric Features")
+                    input_data[feat] = st.slider(
+                        f"{feat} (months)", int(min_val), int(max_val), int(mean_val)
+                    )
             elif "monthlycharges" in feat.lower():
-                input_data[feat] = st.slider(
-                    f"{feat}", float(min_val), float(max_val), float(mean_val)
-                )
+                with col3:
+                    st.subheader(" ")
+                    input_data[feat] = st.slider(
+                        f"{feat}", float(min_val), float(max_val), float(mean_val)
+                    )
             else:
                 input_data[feat] = st.number_input(
                     feat, min_value=min_val, max_value=max_val, value=mean_val
@@ -368,14 +389,15 @@ elif page == "🧪 Model Demonstration":
         cat_items = list(cat_features.items())
 
         # Split into n columns
-        num_cols = 8
+        num_cols = 5
         cols = st.columns(num_cols)
         for i, (feat, categories) in enumerate(cat_items):
             col = cols[i % num_cols]
             with col:
                 input_data[feat] = st.selectbox(feat, categories)
 
-        submitted = st.form_submit_button("Predict Churn")
+        with cols[-1]:
+            submitted = st.form_submit_button("Predict Churn")
 
     # --- Prediction ---
     if submitted:
@@ -387,10 +409,98 @@ elif page == "🧪 Model Demonstration":
             proba = model.predict_proba(X_proc)[0, 1]
             pred = model.predict(X_proc)[0]
 
-            st.success(f"**Prediction:** {'Churn' if pred==1 else 'No Churn'}")
-            st.info(f"**Churn Probability:** {proba:.2%}")
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.success(f"**Prediction:** {'Churn' if pred==1 else 'No Churn'}")
+            with col2:
+                st.info(f"**Churn Probability:** {proba:.2%}")
+                
         except Exception as e:
             st.error(f"Prediction failed: {e}")
 
+# --- TAB 5: A/B Testing ---
+if page == tab_names[4]:
+    st.title("🧬 A/B Testing Simulation")
 
+    st.markdown("""
+    This demo simulates an **A/B test** for churn reduction:
+    - **`Group A (Control)`** → Customers receive no special treatment.  
+    - **`Group B (Treatment)`** → Customers receive a retention strategy (discount, loyalty perks).  
+
+    You can adjust the `Baseline Churn Rate (%)`, `Retention Effect (%)`, and `Sample Size (N)` to see how results change.
+    """)
+
+    col1, col2 = st.columns(2)
+    
+    # --- Slider controls ---
+    with col2:
+        st.subheader("⚙️ Simulation Parameters")
+        N = st.slider("Sample Size (N)", 200, 10000, 1000, step=100)
+        p_churn_base = st.slider("Baseline Churn Rate (%)", 0.05, 0.8, 0.3, step=0.05)
+        retention_effect = st.slider("Retention Effect (%)", 0.0, 0.5, 0.2, step=0.05)
+
+    # --- Simulate experiment ---
+    np.random.seed(42)
+    groups = np.random.choice(["A", "B"], size=N)
+
+    # Simulate churn probabilities with variation
+    p_churn = np.random.beta(a=2, b=6, size=N) * (p_churn_base / 0.25)
+    p_churn = np.clip(p_churn, 0, 1)  # ensure valid probabilities
+    p_churn[groups == "B"] *= (1 - retention_effect)  # apply treatment effect
+
+    # Simulated churn outcomes
+    churn_outcomes = np.random.binomial(1, p_churn)
+
+    # Build DataFrame
+    df = pd.DataFrame({
+        "Group": groups,
+        "churn": churn_outcomes,
+        "churn_prob": p_churn
+    })
+
+    # --- Compute churn rates ---
+    churn_rate_A = df[df["Group"] == "A"]["churn"].mean()
+    churn_rate_B = df[df["Group"] == "B"]["churn"].mean()
+
+    # Name the experimental groups
+    df['Group'] = df['Group'].map({'A': 'Control (A)', 'B': 'Treatment (B)'})
+
+    # --- Statistical test ---
+    contingency = pd.crosstab(df["Group"], df["churn"])
+    contingency.columns = ["No Churn", "Churn"]
+
+    chi2, p, dof, expected_freq = chi2_contingency(contingency)
+
+    with col1:
+        # --- KDE Plot ---
+        st.subheader("Distribution of Churn Probabilities")
+        fig, ax = plt.subplots(figsize=(8, 5))
+        sns.kdeplot(data=df, x="churn_prob", hue="Group", fill=True, common_norm=False, alpha=0.5, ax=ax)
+        ax.set_title("KDE of Churn Probability (Control vs Treatment)")
+        ax.set_xlabel("Churn Probability")
+        ax.set_ylabel("Density")
+        st.pyplot(fig)
+    
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("📈 Chi-Square Test Results")
+        st.write("Contingency Table:")
+        contingency['Churn Rate (%)'] = 100 * contingency['Churn'] / contingency['No Churn']
+        st.dataframe(contingency.round(2))
+        st.write(f"**`p-value: {p:.4e}`**")
+        if p < 0.05:
+            st.success("✅ Significant reduction in churn detected!")
+        else:
+            st.warning("❌ No significant effect detected.")
+
+    with col2:
+        st.subheader("Expected Frequencies")
+        st.write("If **NO group effect**:")
+        expected_freq = pd.DataFrame(expected_freq, columns=["No Churn", "Churn"])
+        expected_freq['Churn Rate (%)'] = 100 * expected_freq['Churn'] / expected_freq['No Churn']
+        expected_freq.index = contingency.index
+        expected_freq.columns = contingency.columns
+        st.dataframe(expected_freq.round(2))
 
