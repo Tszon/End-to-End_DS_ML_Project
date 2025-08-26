@@ -1,4 +1,4 @@
-# 📊 Telco Customer Churn Prediction
+# 📊 End-to-End ML Deployment: Telco Customer Churn Project
 
 ## 🌐 Live Demo
 
