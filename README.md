@@ -2,7 +2,7 @@
 
 ## 🌐 Live Demo
 
-👉 [Open in Streamlit](https://tszontseng-telco-end2end-customer-churn-project.streamlit.app/)
+🔗 [Streamlit App Demo](https://tszontseng-telco-end2end-customer-churn-project.streamlit.app/)
 
 ---
 
