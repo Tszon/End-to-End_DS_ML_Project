@@ -2,7 +2,7 @@
 
 ## 🌐 Live Demo
 
-🔗 [Streamlit App Demo](https://tszontseng-telco-end2end-customer-churn-project.streamlit.app/)
+[![Streamlit App](https://streamlit.io/images/brand/streamlit-logo-secondary-colormark-darktext.png)](https://tszontseng-telco-end2end-customer-churn-project.streamlit.app/)
 
 ---
 
