@@ -2,7 +2,7 @@
 
 ## 🌐 Live Demo
 
-👉 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tszontseng-customer-churn-project.streamlit.app/)
+👉 [![Open in Streamlit](https://tszontseng-telco-end2end-customer-churn-project.streamlit.app/)
 
 ---
 
